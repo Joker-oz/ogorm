@@ -2,12 +2,13 @@ package mysql
 
 import (
 	"fmt"
-	"github.com/Joker-oz/ogorm"
+	"github.com/Joker-oz/ogorm/config"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"log"
 	"os"
+	"time"
 )
 
 type Model struct {
@@ -25,7 +26,7 @@ type Mysql struct {
 	isOpenLog bool
 }
 
-func Init(config ogorm.DBConfig) *Mysql {
+func Init(config config.DBConfig) *Mysql {
 	m := &Mysql{}
 	_,err := m.NewEngine(config)
 	if err != nil {
@@ -34,7 +35,7 @@ func Init(config ogorm.DBConfig) *Mysql {
 	return m
 }
 
-func (m *Mysql) NewEngine(cfg ogorm.DBConfig) (*gorm.DB, error) {
+func (m *Mysql) NewEngine(cfg config.DBConfig) (*gorm.DB, error) {
 	conn := fmt.Sprintf(fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=%s&parseTime=%t&loc=Local",
 		cfg.UserName,
 		cfg.Password,
@@ -76,22 +77,29 @@ func (m *Mysql) SetLogger(writer logger.Writer, config logger.Config) {
 	}
 }
 
+var DefaultDBLogConfig = logger.Config{
+	SlowThreshold:             time.Second,
+	LogLevel:                  logger.Info,
+	IgnoreRecordNotFoundError: true,
+	Colorful:                  true,
+}
+
 func (m *Mysql) SetDefaultLogger() {
-	m.SetLogger(log.New(os.Stdout, "\r\n", log.LstdFlags),ogorm.DefaultDBLogConfig)
+	m.SetLogger(log.New(os.Stdout, "\r\n", log.LstdFlags), DefaultDBLogConfig)
 }
 
 func (m *Mysql) mergeDefaultLogCfg(config logger.Config) logger.Config {
 	if config.SlowThreshold == 0 {
-		config.SlowThreshold = ogorm.DefaultDBLogConfig.SlowThreshold
+		config.SlowThreshold = DefaultDBLogConfig.SlowThreshold
 	}
 	if config.LogLevel == 0 {
-		config.LogLevel = ogorm.DefaultDBLogConfig.LogLevel
+		config.LogLevel = DefaultDBLogConfig.LogLevel
 	}
 	if config.Colorful == false {
-		config.Colorful = ogorm.DefaultDBLogConfig.Colorful
+		config.Colorful = DefaultDBLogConfig.Colorful
 	}
 	if config.IgnoreRecordNotFoundError == false {
-		config.IgnoreRecordNotFoundError = ogorm.DefaultDBLogConfig.IgnoreRecordNotFoundError
+		config.IgnoreRecordNotFoundError = DefaultDBLogConfig.IgnoreRecordNotFoundError
 	}
 	return config
 }

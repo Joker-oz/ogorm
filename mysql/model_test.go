@@ -1,7 +1,7 @@
 package mysql
 
 import (
-	"github.com/Joker-oz/ogorm"
+	"github.com/Joker-oz/ogorm/config"
 	"gorm.io/gorm/logger"
 	"log"
 	"os"
@@ -14,7 +14,7 @@ type Tag struct {
 	State uint8  `json:"state"`
 }
 func TestNewEngine(t *testing.T) {
-	cfg := ogorm.DBConfig{
+	cfg := config.DBConfig{
 		DBType: "mysql",
 		UserName: "root",
 		Password: "DDI@zdns2022",
@@ -26,7 +26,7 @@ func TestNewEngine(t *testing.T) {
 		MaxIdleConns: 10,
 		MaxOpenConns: 30,
 	}
-	m := Init()
+	m := Init(cfg)
 	_,_ = m.NewEngine(cfg)
 	var tag  *Tag
 	m.DB.Table("blog_tag").Find(&tag)
