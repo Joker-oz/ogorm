@@ -1,7 +1,8 @@
-package ogorm
+package mysql
 
 import (
 	"fmt"
+	"github.com/Joker-oz/ogorm/config"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -25,7 +26,7 @@ type Mysql struct {
 	isOpenLog bool
 }
 
-func Init(config DBConfig) *Mysql {
+func Init(config config.DBConfig) *Mysql {
 	m := &Mysql{}
 	_,err := m.NewEngine(config)
 	if err != nil {
@@ -34,7 +35,7 @@ func Init(config DBConfig) *Mysql {
 	return m
 }
 
-func (m *Mysql) NewEngine(cfg DBConfig) (*gorm.DB, error) {
+func (m *Mysql) NewEngine(cfg config.DBConfig) (*gorm.DB, error) {
 	conn := fmt.Sprintf(fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=%s&parseTime=%t&loc=Local",
 		cfg.UserName,
 		cfg.Password,

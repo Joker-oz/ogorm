@@ -1,7 +1,12 @@
 package ogorm
 
-func NewMysql(config DBConfig) *Mysql {
-	return Init(config)
+import (
+	"github.com/Joker-oz/ogorm/config"
+	"github.com/Joker-oz/ogorm/mysql"
+)
+
+func NewMysql(config config.DBConfig) *mysql.Mysql {
+	return mysql.Init(config)
 }
 
 
