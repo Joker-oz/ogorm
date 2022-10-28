@@ -1,7 +1,6 @@
-package mysql
+package ogorm
 
 import (
-	"github.com/Joker-oz/ogorm/config"
 	"gorm.io/gorm/logger"
 	"log"
 	"os"
@@ -14,7 +13,7 @@ type Tag struct {
 	State uint8  `json:"state"`
 }
 func TestNewEngine(t *testing.T) {
-	cfg := config.DBConfig{
+	cfg := DBConfig{
 		DBType: "mysql",
 		UserName: "root",
 		Password: "DDI@zdns2022",

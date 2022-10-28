@@ -1,4 +1,4 @@
-package config
+package ogorm
 
 type DBConfig struct {
 	DBType                    string
