@@ -36,14 +36,14 @@ func Init(config config.DBConfig) *Mysql {
 }
 
 func (m *Mysql) NewEngine(cfg config.DBConfig) (*gorm.DB, error) {
-	conn := fmt.Sprintf(fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=%s&parseTime=%t&loc=Local",
+	conn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=%s&parseTime=%t&loc=Local",
 		cfg.UserName,
 		cfg.Password,
 		cfg.Host,
 		cfg.DBName,
 		cfg.Charset,
 		cfg.ParseTime,
-	))
+	)
 	db, err := gorm.Open(mysql.New(mysql.Config{
 		DSN:                       conn,
 		DefaultStringSize:         256,
